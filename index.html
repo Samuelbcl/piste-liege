@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Piste liégeoise — Jeu de piste</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="topbar-row">
+      <div>
+        <div class="topbar-title"><i class="ti ti-ship"></i>Piste liégeoise</div>
+        <div class="topbar-sub">Guillemins · Hors-Château · Place Saint-Lambert</div>
+      </div>
+      <div class="topbar-right">
+        <div class="pbar-wrap">
+          <div class="pbar-bg"><div class="pbar-fill" id="pb" style="width:4%"></div></div>
+          <div class="pbar-lbl" id="pbl">0 / 12</div>
+        </div>
+        <span class="score-chip" id="sc">0 pts</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="sw('map')" id="tbm"><i class="ti ti-map"></i>Carte</div>
+    <div class="tab" onclick="sw('list')" id="tbl"><i class="ti ti-list"></i>Programme</div>
+  </div>
+
+  <div id="vm" class="map-wrap">
+    <svg class="map-svg" viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" id="svg">
+      <rect width="400" height="340" fill="#dff0e8"/>
+      <path d="M10,185 Q80,170 160,185 Q240,200 320,178 Q365,165 395,172"
+            stroke="#5DCAA5" stroke-width="14" fill="none" stroke-linecap="round" opacity=".5"/>
+      <text x="200" y="210" text-anchor="middle" font-size="10" fill="#0F6E56" opacity=".7">La Meuse</text>
+      <line x1="205" y1="15" x2="205" y2="330" stroke="#9FE1CB" stroke-width="1.5" opacity=".3"/>
+      <line x1="20" y1="188" x2="390" y2="188" stroke="#9FE1CB" stroke-width="1.5" opacity=".3"/>
+      <text x="28"  y="172" font-size="8" fill="#085041" opacity=".65">Quai Godfroid Kurth</text>
+      <text x="200" y="296" font-size="8" fill="#085041" opacity=".65">Rue Hors-Château / Rue du Palais</text>
+      <text x="95"  y="232" font-size="8" fill="#085041" opacity=".65">Place Saint-Lambert</text>
+    </svg>
+    <div class="map-hint">Touchez une étape</div>
+  </div>
+
+  <div id="vl" class="list-panel" style="display:none"></div>
+
+  <div class="legend" id="legend" style="display:none">
+    <div class="leg-item"><div class="leg-dot" style="background:#E1F5EE;border-color:#1D9E75"></div>Énigme</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#E6F1FB;border-color:#185FA5"></div>Défi groupé</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#FAEEDA;border-color:#BA7517"></div>Pause</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#F1EFE8;border-color:#888780"></div>Impasse solo</div>
+  </div>
+
+  <div class="ov" id="ov">
+    <div class="pop" id="pop"></div>
+  </div>
+
+</div>
+
+<script src="data/steps.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

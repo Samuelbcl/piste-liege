@@ -1,0 +1,219 @@
+/* ===========================
+   Piste liégeoise — styles
+   =========================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f5f4f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---- Layout ---- */
+.shell {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0,0,0,.08);
+}
+
+/* ---- Variables ---- */
+:root {
+  --g:   #1D9E75;
+  --gl:  #E1F5EE;
+  --gd:  #0F6E56;
+  --a:   #EF9F27;
+  --al:  #FAEEDA;
+  --ad:  #633806;
+  --rl:  #FEF0F0;
+  --rd:  #C0392B;
+  --pl:  #EEEDFE;
+  --pd:  #3C3489;
+  --border: #e8e6df;
+  --bg2:    #f9f8f5;
+  --txt:    #1a1a18;
+  --txt2:   #6b6a65;
+}
+
+/* ---- Topbar ---- */
+.topbar {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.topbar-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.topbar-title { font-size: 17px; font-weight: 600; color: var(--txt); }
+.topbar-title .ti { color: var(--g); margin-right: 5px; }
+.topbar-sub { font-size: 12px; color: var(--txt2); margin-top: 2px; }
+.topbar-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+
+/* ---- Progress bar ---- */
+.pbar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; width: 100px; }
+.pbar-fill { height: 100%; background: var(--g); border-radius: 3px; transition: width .5s; }
+.pbar-lbl { font-size: 11px; color: var(--gd); margin-top: 3px; text-align: right; }
+.score-chip {
+  font-size: 12px; font-weight: 600; color: var(--gd);
+  background: var(--gl); padding: 4px 12px; border-radius: 100px;
+}
+
+/* ---- Tabs ---- */
+.tabs { display: flex; border-bottom: 1px solid var(--border); background: #fff; }
+.tab {
+  flex: 1; padding: 10px 8px; font-size: 13px; cursor: pointer;
+  color: var(--txt2); border-bottom: 2px solid transparent;
+  text-align: center; transition: all .2s; font-weight: 500;
+}
+.tab .ti { margin-right: 4px; }
+.tab.active { color: var(--g); border-bottom-color: var(--g); }
+
+/* ---- Map ---- */
+.map-wrap { position: relative; flex: 1; background: #dff0e8; overflow: hidden; min-height: 340px; }
+.map-svg { width: 100%; height: 100%; }
+.map-hint {
+  position: absolute; bottom: 10px; right: 12px;
+  font-size: 11px; color: var(--gd); background: var(--gl);
+  padding: 4px 12px; border-radius: 100px;
+  border: 1px solid #9FE1CB; pointer-events: none;
+}
+
+/* ---- List ---- */
+.list-panel { overflow-y: auto; flex: 1; }
+.sitem {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 13px 16px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.sitem:hover, .sitem:active { background: var(--bg2); }
+.sitem.done .sicon { background: var(--g) !important; color: #fff !important; border-color: var(--gd) !important; }
+
+.sicon {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+  border: 2px solid var(--g); color: var(--g); background: var(--gl);
+}
+.sicon.bar   { border-color: #BA7517; color: #854F0B; background: var(--al); }
+.sicon.boat  { border-color: #534AB7; color: var(--pd); background: var(--pl); }
+.sicon.alley { border-color: #888780; color: #444441; background: #F1EFE8; }
+.sicon.group { border-color: #185FA5; color: #185FA5; background: #E6F1FB; }
+
+.sname  { font-size: 15px; font-weight: 600; color: var(--txt); line-height: 1.3; }
+.stime  { font-size: 12px; color: var(--txt2); margin-top: 2px; }
+.stag   { font-size: 11px; padding: 3px 9px; border-radius: 100px; margin-top: 5px; display: inline-block; font-weight: 500; }
+.tag-e  { background: var(--gl); color: var(--gd); }
+.tag-p  { background: var(--al); color: var(--ad); }
+.tag-i  { background: #E6F1FB; color: #0C447C; }
+.tag-g  { background: #E6F1FB; color: #0C447C; }
+
+/* ---- Legend ---- */
+.legend {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding: 10px 16px; border-top: 1px solid var(--border);
+  background: #fff; font-size: 11px; color: var(--txt2);
+}
+.leg-item { display: flex; align-items: center; gap: 5px; }
+.leg-dot  { width: 10px; height: 10px; border-radius: 50%; border: 2px solid; }
+
+/* ---- Overlay / Popup ---- */
+.ov {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.5); z-index: 100;
+  align-items: flex-end; justify-content: center;
+}
+@media (min-width: 480px) { .ov { align-items: center; } }
+
+.pop {
+  background: #fff; border-radius: 20px 20px 0 0;
+  padding: 20px 18px 28px;
+  width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+}
+@media (min-width: 480px) { .pop { border-radius: 16px; max-height: 80vh; } }
+
+.pop-handle {
+  display: block; width: 36px; height: 4px;
+  background: #ddd; border-radius: 2px; margin: 0 auto 16px;
+}
+.pop-num   { font-size: 11px; font-weight: 600; color: var(--g); margin-bottom: 2px; text-transform: uppercase; letter-spacing: .5px; }
+.pop-title { font-size: 19px; font-weight: 700; color: var(--txt); line-height: 1.2; }
+.pop-addr  { font-size: 13px; color: var(--txt2); margin-top: 3px; }
+.pop-time  { font-size: 13px; color: var(--a); margin-top: 2px; font-weight: 600; }
+
+.close-btn {
+  background: var(--bg2); border: none; width: 32px; height: 32px;
+  border-radius: 50%; cursor: pointer; color: var(--txt2);
+  font-size: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* ---- Anecdote ---- */
+.anec {
+  background: var(--bg2); border-radius: 12px; padding: 13px;
+  font-size: 14px; color: var(--txt2); line-height: 1.65;
+  margin: 14px 0; border-left: 4px solid var(--g);
+}
+.anec .ti { color: var(--g); margin-right: 5px; }
+
+/* ---- GPS button ---- */
+.gps-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 500; color: var(--g);
+  text-decoration: none; border: 1.5px solid var(--g);
+  padding: 8px 15px; border-radius: 100px; margin-bottom: 14px;
+  -webkit-tap-highlight-color: transparent;
+}
+.gps-btn:active { opacity: .7; }
+
+/* ---- Enigme box ---- */
+.ebox { border-radius: 12px; padding: 13px; font-size: 14px; line-height: 1.65; margin-bottom: 13px; }
+.ebox.enigme { background: var(--gl); color: var(--gd); }
+.ebox.grp    { background: #E6F1FB; color: #0C447C; }
+.elbl { font-size: 10px; font-weight: 700; margin-bottom: 6px; letter-spacing: .7px; text-transform: uppercase; }
+
+/* ---- Input / Buttons ---- */
+.ainput {
+  width: 100%; padding: 12px 15px; font-size: 16px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  background: #fff; color: var(--txt); margin-bottom: 10px;
+  -webkit-appearance: none; outline: none;
+}
+.ainput:focus { border-color: var(--g); }
+
+.btn-row { display: flex; gap: 8px; }
+.bv {
+  background: var(--g); color: #fff; border: none;
+  padding: 12px 22px; border-radius: 12px; font-size: 15px;
+  cursor: pointer; font-weight: 600; flex: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+.bv:active { opacity: .85; }
+.bh {
+  background: transparent; border: 1.5px solid var(--border);
+  color: var(--txt2); padding: 12px 16px; border-radius: 12px;
+  font-size: 14px; cursor: pointer; font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
+}
+.bh:active { background: var(--bg2); }
+
+/* ---- Feedback ---- */
+.fb { font-size: 14px; margin-top: 10px; padding: 10px 14px; border-radius: 12px; display: none; font-weight: 500; }
+.fbok { background: var(--gl); color: var(--gd); }
+.fbko { background: var(--rl); color: var(--rd); }
+.fbhi { background: var(--al); color: var(--ad); }
+
+/* ---- Pause / Final ---- */
+.pause-box { text-align: center; padding: 10px 0 4px; color: var(--txt2); font-size: 14px; }
+.final-pop { text-align: center; padding: 10px 0; }
+.final-pop .trophy { font-size: 56px; margin-bottom: 14px; }
+.final-pop h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: var(--txt); }
+.final-pop p  { font-size: 15px; color: var(--txt2); line-height: 1.6; margin-bottom: 6px; }
+.final-pop .pts { font-size: 36px; font-weight: 700; color: var(--g); margin: 14px 0; }
