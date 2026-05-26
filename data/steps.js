@@ -22,10 +22,10 @@
 const STEPS = [
   {
     id: "A", type: "boat", icon: "ship", time: "13h00",
-    name: "Navette fluviale — Guillemins",
-    addr: "Quai de Fragnée, Liège",
-    lat: 50.6244, lng: 5.5667, x: 40, y: 232,
-    anec: "La navette fluviale longe la Meuse depuis les Guillemins jusqu'au Quai Godfroid Kurth, en face du musée Curtius. C'est exactement l'angle qu'avaient les marchands qui approvisionnaient le palais de Jean Curtius au XVIIe siècle.",
+    name: "Navette fluviale — Belle Liégeoise",
+    addr: "Passerelle La Belle Liégeoise, Liège",
+    lat: 50.6232, lng: 5.5712, x: 40, y: 232,
+    anec: "Embarquement au pied de la Belle Liégeoise — passerelle piétonne et cyclable inaugurée en 2016, conçue par le bureau Greisch. Ses 163 mètres relient le parc de la Boverie au Quai des Vennes et symbolisent le renouveau urbain de Liège. La navette longera ensuite la Meuse jusqu'au Quai Godfroid Kurth, face au musée Curtius.",
     tag: "i"
   },
   {
@@ -73,7 +73,19 @@ const STEPS = [
     pts: 10, tag: "g"
   },
   {
-    id: "F", type: "group", icon: "arrows-join", time: "~15h35",
+    id: "F", type: "alley", icon: "door-enter", time: "~15h35",
+    name: "Cour Saint-Antoine",
+    addr: "Rue Hors-Château, Liège",
+    lat: 50.6476, lng: 5.5811, x: 308, y: 158,
+    anec: "La Cour Saint-Antoine est l'une des plus spacieuses du quartier — une vraie cour fermée. Elle doit son nom à une chapelle dédiée à saint Antoine de Padoue.",
+    enigme: "Dans la Cour Saint-Antoine, cherchez une niche votive ou représentation religieuse sur les murs. À quel saint est-elle dédiée, et à quelle hauteur approximative est-elle placée ?",
+    answer: ["antoine", "saint antoine", "padoue", "vierge", "marie", "premier", "deuxième", "2m", "3m", "mur", "hauteur"],
+    hint: "Les niches votives liégeoises sont encastrées entre le 1er et le 2e étage des façades.",
+    solution: "Saint Antoine de Padoue — la niche est encastrée entre le 1er et le 2e étage de la façade (environ 2 à 3 m de hauteur).",
+    pts: 10, tag: "e"
+  },
+  {
+    id: "G", type: "group", icon: "arrows-join", time: "~15h50",
     name: "Anges · Venta · Couronne",
     addr: "Rue Hors-Château, Liège",
     lat: 50.6479, lng: 5.5799, x: 258, y: 158,
@@ -85,31 +97,7 @@ const STEPS = [
     pts: 10, tag: "g"
   },
   {
-    id: "G", type: "alley", icon: "door-enter", time: "~15h50",
-    name: "Impasse des Ursulines",
-    addr: "Rue Hors-Château, Liège",
-    lat: 50.6475, lng: 5.5778, x: 272, y: 122,
-    anec: "Son nom rappelle le couvent des Ursulines supprimé en 1796 par la Révolution. Les religieuses enseignaient aux jeunes filles liégeoises.",
-    enigme: "Quel était le rôle principal des Ursulines dans la société liégeoise d'Ancien Régime, et qu'est devenu leur couvent après 1796 ?",
-    answer: ["enseignement", "école", "éducation", "jeunes filles", "instruction", "vendu", "supprimé", "nationalisé"],
-    hint: "Les Ursulines étaient dédiées à l'éducation des filles. La Révolution a supprimé les ordres et vendu leurs biens.",
-    solution: "L'éducation des jeunes filles. Après 1796, l'ordre fut supprimé par la Révolution et le couvent vendu comme bien national.",
-    pts: 10, tag: "e"
-  },
-  {
     id: "H", type: "alley", icon: "door-enter", time: "~16h00",
-    name: "Impasse Dropier",
-    addr: "Rue Hors-Château, Liège",
-    lat: 50.6479, lng: 5.5795, x: 284, y: 100,
-    anec: "'Dropier' est la forme wallonne de 'drapier'. Ce métier médiéval était l'un des plus prospères de Liège, carrefour des routes flamandes et rhénanes.",
-    enigme: "Comment dit-on 'drapier' en wallon, et quelle matière première ce commerce traitait-il principalement à Liège au Moyen Âge ?",
-    answer: ["laine", "drap", "dropier", "drapier", "tissu", "toile", "lainier", "textile"],
-    hint: "La laine venait des Ardennes et des Pays-Bas.",
-    solution: "« Dropier » en wallon — la matière première principale était la laine (venue des Ardennes et des Pays-Bas).",
-    pts: 10, tag: "e"
-  },
-  {
-    id: "I", type: "alley", icon: "door-enter", time: "~16h10",
     name: "Impasse Pomme Pourrie",
     addr: "Rue Hors-Château, Liège",
     lat: 50.6480, lng: 5.5796, x: 296, y: 134,
@@ -121,15 +109,27 @@ const STEPS = [
     pts: 10, tag: "e"
   },
   {
-    id: "J", type: "alley", icon: "door-enter", time: "~16h20",
-    name: "Cour Saint-Antoine",
+    id: "I", type: "alley", icon: "door-enter", time: "~16h10",
+    name: "Impasse Dropier",
     addr: "Rue Hors-Château, Liège",
-    lat: 50.6476, lng: 5.5811, x: 308, y: 158,
-    anec: "La Cour Saint-Antoine est l'une des plus spacieuses du quartier — une vraie cour fermée. Elle doit son nom à une chapelle dédiée à saint Antoine de Padoue.",
-    enigme: "Dans la Cour Saint-Antoine, cherchez une niche votive ou représentation religieuse sur les murs. À quel saint est-elle dédiée, et à quelle hauteur approximative est-elle placée ?",
-    answer: ["antoine", "saint antoine", "padoue", "vierge", "marie", "premier", "deuxième", "2m", "3m", "mur", "hauteur"],
-    hint: "Les niches votives liégeoises sont encastrées entre le 1er et le 2e étage des façades.",
-    solution: "Saint Antoine de Padoue — la niche est encastrée entre le 1er et le 2e étage de la façade (environ 2 à 3 m de hauteur).",
+    lat: 50.6479, lng: 5.5795, x: 284, y: 100,
+    anec: "'Dropier' est la forme wallonne de 'drapier'. Ce métier médiéval était l'un des plus prospères de Liège, carrefour des routes flamandes et rhénanes.",
+    enigme: "Comment dit-on 'drapier' en wallon, et quelle matière première ce commerce traitait-il principalement à Liège au Moyen Âge ?",
+    answer: ["laine", "drap", "dropier", "drapier", "tissu", "toile", "lainier", "textile"],
+    hint: "La laine venait des Ardennes et des Pays-Bas.",
+    solution: "« Dropier » en wallon — la matière première principale était la laine (venue des Ardennes et des Pays-Bas).",
+    pts: 10, tag: "e"
+  },
+  {
+    id: "J", type: "alley", icon: "door-enter", time: "~16h20",
+    name: "Impasse des Ursulines",
+    addr: "Rue Hors-Château, Liège",
+    lat: 50.6475, lng: 5.5778, x: 272, y: 122,
+    anec: "Son nom rappelle le couvent des Ursulines supprimé en 1796 par la Révolution. Les religieuses enseignaient aux jeunes filles liégeoises.",
+    enigme: "Quel était le rôle principal des Ursulines dans la société liégeoise d'Ancien Régime, et qu'est devenu leur couvent après 1796 ?",
+    answer: ["enseignement", "école", "éducation", "jeunes filles", "instruction", "vendu", "supprimé", "nationalisé"],
+    hint: "Les Ursulines étaient dédiées à l'éducation des filles. La Révolution a supprimé les ordres et vendu leurs biens.",
+    solution: "L'éducation des jeunes filles. Après 1796, l'ordre fut supprimé par la Révolution et le couvent vendu comme bien national.",
     pts: 10, tag: "e"
   },
   {
