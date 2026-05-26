@@ -40,53 +40,84 @@ function updateProgress() {
   document.getElementById('sc').textContent  = score + ' pts';
 }
 
-/* ---- Rendu carte SVG ---- */
-function renderMap() {
-  const svg = document.getElementById('svg');
+/* ---- Rendu carte Google Maps ---- */
+let gmap = null;
+let gMarkers = {};   // id -> marker
+let gPath = null;
 
-  // Supprimer anciens marqueurs et route
-  svg.querySelectorAll('.mg, #rl').forEach(e => e.remove());
+function markerColors(s, done) {
+  const isBar  = s.type === 'bar' || s.type === 'food';
+  const isBoat = s.type === 'boat';
+  const isGrp  = s.type === 'group';
+  const isAl   = s.type === 'alley';
+  return {
+    fill:   done ? '#1D9E75' : isBar ? '#FAEEDA' : isBoat ? '#EEEDFE' : isGrp ? '#E6F1FB' : isAl ? '#F1EFE8' : '#fff',
+    stroke: done ? '#0F6E56' : isBar ? '#EF9F27' : isBoat ? '#534AB7' : isGrp ? '#185FA5' : isAl ? '#888780' : '#1D9E75',
+    text:   done ? '#fff'    : isBar ? '#854F0B' : isBoat ? '#3C3489' : isGrp ? '#0C447C' : isAl ? '#444441' : '#0F6E56'
+  };
+}
 
-  // Ligne de route
-  const pl = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-  pl.id = 'rl';
-  pl.setAttribute('points', STEPS.map(s => `${s.x},${s.y}`).join(' '));
-  pl.setAttribute('stroke', '#1D9E75');
-  pl.setAttribute('stroke-width', '2');
-  pl.setAttribute('fill', 'none');
-  pl.setAttribute('stroke-dasharray', '5,4');
-  pl.setAttribute('opacity', '.55');
-  svg.appendChild(pl);
+function markerSvgIcon(s, done) {
+  const c = markerColors(s, done);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <circle cx="16" cy="16" r="13" fill="${c.fill}" stroke="${c.stroke}" stroke-width="2.5"/>
+    <text x="16" y="20" text-anchor="middle" font-family="-apple-system,Segoe UI,sans-serif"
+          font-size="12" font-weight="700" fill="${c.text}">${s.id}</text>
+  </svg>`;
+  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+}
+
+// Appelée par le callback Google Maps une fois le script chargé
+function initMap() {
+  gmap = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: 50.6465, lng: 5.5785 },
+    zoom: 15,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
+    gestureHandling: 'greedy'
+  });
+
+  // Tracé de l'itinéraire
+  gPath = new google.maps.Polyline({
+    path: STEPS.map(s => ({ lat: s.lat, lng: s.lng })),
+    geodesic: true,
+    strokeColor: '#1D9E75',
+    strokeOpacity: 0.7,
+    strokeWeight: 3,
+    map: gmap
+  });
 
   // Marqueurs
   STEPS.forEach(s => {
-    const done  = solved.has(s.id);
-    const isBar = s.type === 'bar' || s.type === 'food';
-    const isBoat = s.type === 'boat';
-    const isGrp  = s.type === 'group';
-    const isAl   = s.type === 'alley';
+    const done = solved.has(s.id);
+    const marker = new google.maps.Marker({
+      position: { lat: s.lat, lng: s.lng },
+      map: gmap,
+      title: s.name,
+      icon: {
+        url: markerSvgIcon(s, done),
+        scaledSize: new google.maps.Size(32, 32),
+        anchor: new google.maps.Point(16, 16)
+      }
+    });
+    marker.addListener('click', () => openStep(s.id));
+    gMarkers[s.id] = marker;
+  });
+}
 
-    const fill   = done ? '#1D9E75' : isBar ? '#FAEEDA' : isBoat ? '#EEEDFE' : isGrp ? '#E6F1FB' : isAl ? '#F1EFE8' : '#fff';
-    const stroke = done ? '#0F6E56' : isBar ? '#EF9F27' : isBoat ? '#534AB7' : isGrp ? '#185FA5' : isAl ? '#888780' : '#1D9E75';
-    const color  = done ? '#fff'    : isBar ? '#854F0B' : isBoat ? '#3C3489' : isGrp ? '#0C447C' : isAl ? '#444441' : '#0F6E56';
-
-    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.classList.add('mg');
-    g.style.cursor = 'pointer';
-    g.addEventListener('click', () => openStep(s.id));
-
-    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    c.setAttribute('cx', s.x);  c.setAttribute('cy', s.y);  c.setAttribute('r', '14');
-    c.setAttribute('fill', fill); c.setAttribute('stroke', stroke); c.setAttribute('stroke-width', '2.5');
-
-    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    t.setAttribute('x', s.x); t.setAttribute('y', s.y + 4);
-    t.setAttribute('text-anchor', 'middle'); t.setAttribute('font-size', '10');
-    t.setAttribute('font-weight', '700'); t.setAttribute('fill', color);
-    t.textContent = s.id;
-
-    g.appendChild(c); g.appendChild(t);
-    svg.appendChild(g);
+// Rafraîchit l'apparence des marqueurs (après résolution d'une énigme)
+function renderMap() {
+  if (!gmap) return;   // Google Maps pas encore chargé
+  STEPS.forEach(s => {
+    const marker = gMarkers[s.id];
+    if (!marker) return;
+    const done = solved.has(s.id);
+    marker.setIcon({
+      url: markerSvgIcon(s, done),
+      scaledSize: new google.maps.Size(32, 32),
+      anchor: new google.maps.Point(16, 16)
+    });
   });
 }
 
@@ -243,6 +274,10 @@ function sw(tab) {
   document.getElementById('vl').style.display     = tab === 'list' ? 'block' : 'none';
   document.getElementById('legend').style.display = tab === 'list' ? 'flex'  : 'none';
   if (tab === 'list') renderList();
+  if (tab === 'map' && gmap) {
+    google.maps.event.trigger(gmap, 'resize');
+    gmap.setCenter({ lat: 50.6465, lng: 5.5785 });
+  }
 }
 
 /* ---- Fermer overlay en cliquant à l'extérieur ---- */
@@ -252,5 +287,5 @@ document.getElementById('ov').addEventListener('click', function(e) {
 
 /* ---- Init ---- */
 document.getElementById('vm').style.display = 'flex';
-renderMap();
 updateProgress();
+// initMap() est appelée automatiquement par le script Google Maps via &callback=initMap
