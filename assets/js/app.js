@@ -10,6 +10,7 @@ let attempts = {};          // id -> nombre d'essais ratés
 let score    = 0;
 let current  = null;        // id de l'étape ouverte
 let activeTab = 'map';
+let popupTimer = null;      // id du setTimeout d'auto-fermeture (pour pouvoir l'annuler)
 
 const EQ = STEPS.filter(s => s.enigme); // étapes avec énigme
 
@@ -151,6 +152,7 @@ function renderList() {
 function openStep(id) {
   const s = STEPS.find(x => x.id === id);
   if (!s) return;
+  if (popupTimer) { clearTimeout(popupTimer); popupTimer = null; }   // annule auto-fermeture d'une étape précédente
   current = id;
   const done  = solved.has(id);
   const isGrp = s.type === 'group';
@@ -186,7 +188,7 @@ function openStep(id) {
       html += `
         <div class="${boxClass}"><div class="elbl">${label}</div>${s.enigme}</div>
         <input class="ainput" id="ai" placeholder="Votre réponse…"
-               onkeydown="if(event.key==='Enter') checkAnswer()"
+               onkeydown="if(event.key==='Enter'){event.preventDefault();checkAnswer();}"
                autocomplete="off" autocorrect="off" spellcheck="false"/>
         <div class="btn-row">
           <button class="bv" onclick="checkAnswer()">Valider</button>
@@ -202,7 +204,9 @@ function openStep(id) {
   }
 
   document.getElementById('pop').innerHTML = html;
+  document.getElementById('pop').scrollTop = 0;   // évite que le popup s'ouvre scrollé
   document.getElementById('ov').style.display = 'flex';
+  document.body.style.overflow = 'hidden';        // empêche la carte de défiler derrière
 
   if (s.enigme && !done) {
     setTimeout(() => { const i = document.getElementById('ai'); if (i) i.focus(); }, 80);
@@ -210,7 +214,11 @@ function openStep(id) {
 }
 
 function closeStep() {
+  if (popupTimer) { clearTimeout(popupTimer); popupTimer = null; }
+  const ai = document.getElementById('ai');
+  if (ai) ai.blur();   // dismiss le clavier mobile pour éviter le saut de viewport
   document.getElementById('ov').style.display = 'none';
+  document.body.style.overflow = '';
   current = null;
 }
 
@@ -218,11 +226,16 @@ function closeStep() {
 function checkAnswer() {
   const s = STEPS.find(x => x.id === current);
   if (!s) return;
-  const val = (document.getElementById('ai').value || '').trim().toLowerCase();
+  if (solved.has(s.id)) return;   // déjà résolu/révélé → on ignore (évite double-submit)
+
+  const ai  = document.getElementById('ai');
   const fb  = document.getElementById('fb');
+  if (!ai || !fb) return;
+
+  const val = (ai.value || '').trim().toLowerCase();
   fb.style.display = 'block';
 
-  const ok = s.answer.some(a =>
+  const ok = val.length > 0 && s.answer.some(a =>
     val.includes(a.toLowerCase()) || (a.toLowerCase().includes(val) && val.length > 2)
   );
 
@@ -234,10 +247,9 @@ function checkAnswer() {
     updateProgress();
     renderMap();
     if (activeTab === 'list') renderList();
-    setTimeout(() => {
-      closeStep();
-      if (solved.size === EQ.length) showFinal();
-    }, 1200);
+    ai.disabled = true;
+    document.querySelectorAll('.btn-row button').forEach(b => b.disabled = true);
+    scheduleAutoClose(1200);
     return;
   }
 
@@ -253,20 +265,27 @@ function checkAnswer() {
     updateProgress();
     renderMap();
     if (activeTab === 'list') renderList();
-
-    // Désactiver les contrôles
-    const ai = document.getElementById('ai');
-    if (ai) ai.disabled = true;
+    ai.disabled = true;
     document.querySelectorAll('.btn-row button').forEach(b => b.disabled = true);
-
-    setTimeout(() => {
-      closeStep();
-      if (solved.size === EQ.length) showFinal();
-    }, 4000);
+    scheduleAutoClose(4000);
   } else {
     fb.className = 'fb fbko';
     fb.innerHTML = `<i class="ti ti-x"></i> Pas tout à fait… il vous reste <strong>1 essai</strong>.`;
   }
+}
+
+/* Programme la fermeture auto en gardant la référence du timer
+   pour pouvoir l'annuler si l'utilisateur ferme manuellement entre-temps. */
+function scheduleAutoClose(delay) {
+  if (popupTimer) clearTimeout(popupTimer);
+  popupTimer = setTimeout(() => {
+    popupTimer = null;
+    if (solved.size === EQ.length) {
+      showFinal();    // remplace le contenu sans cacher l'overlay (pas de flash)
+    } else {
+      closeStep();
+    }
+  }, delay);
 }
 
 /* ---- Indice ---- */
@@ -282,8 +301,9 @@ function showHint() {
 /* ---- Écran de fin ---- */
 function showFinal() {
   const total = EQ.reduce((a, s) => a + s.pts, 0);
-  document.getElementById('ov').style.display = 'flex';
-  document.getElementById('pop').innerHTML = `
+  const pop   = document.getElementById('pop');
+  const ov    = document.getElementById('ov');
+  pop.innerHTML = `
     <span class="pop-handle"></span>
     <div class="final-pop">
       <div class="trophy">🏆</div>
@@ -293,6 +313,10 @@ function showFinal() {
       <div class="pts">${score} pts</div>
       <p style="font-size:13px;color:var(--txt2)">Maximum possible : ${total} pts</p>
     </div>`;
+  pop.scrollTop = 0;
+  ov.style.display = 'flex';     // au cas où il aurait été caché
+  document.body.style.overflow = 'hidden';
+  current = null;
 }
 
 /* ---- Changement d'onglet ---- */
