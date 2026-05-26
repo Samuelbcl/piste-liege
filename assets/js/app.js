@@ -4,9 +4,11 @@
  */
 
 /* ---- État global ---- */
-let solved  = new Set();
-let score   = 0;
-let current = null;   // id de l'étape ouverte
+let solved   = new Set();   // énigmes terminées (résolues OU révélées)
+let revealed = new Set();   // énigmes dont la réponse a été révélée (2 essais ratés)
+let attempts = {};          // id -> nombre d'essais ratés
+let score    = 0;
+let current  = null;        // id de l'étape ouverte
 let activeTab = 'map';
 
 const EQ = STEPS.filter(s => s.enigme); // étapes avec énigme
@@ -170,7 +172,10 @@ function openStep(id) {
     </a>`;
 
   if (s.enigme) {
-    if (done) {
+    if (revealed.has(id)) {
+      html += `<div class="fb fbreveal" style="display:block;margin-bottom:10px">
+        <i class="ti ti-eye"></i> <strong>Bonne réponse :</strong><br>${s.solution || s.answer[0]}</div>`;
+    } else if (done) {
       html += `<div class="fb fbok" style="display:block;margin-bottom:10px">
         <i class="ti ti-circle-check"></i> Résolue — +${s.pts} pts</div>`;
     } else {
@@ -233,9 +238,34 @@ function checkAnswer() {
       closeStep();
       if (solved.size === EQ.length) showFinal();
     }, 1200);
+    return;
+  }
+
+  // Réponse incorrecte : compteur d'essais
+  attempts[s.id] = (attempts[s.id] || 0) + 1;
+
+  if (attempts[s.id] >= 2) {
+    // 2 essais ratés → on révèle la bonne réponse
+    fb.className = 'fb fbreveal';
+    fb.innerHTML = `<i class="ti ti-eye"></i> <strong>Bonne réponse :</strong><br>${s.solution || s.answer[0]}`;
+    revealed.add(s.id);
+    solved.add(s.id);   // marqué comme "vu" pour faire avancer la progression
+    updateProgress();
+    renderMap();
+    if (activeTab === 'list') renderList();
+
+    // Désactiver les contrôles
+    const ai = document.getElementById('ai');
+    if (ai) ai.disabled = true;
+    document.querySelectorAll('.btn-row button').forEach(b => b.disabled = true);
+
+    setTimeout(() => {
+      closeStep();
+      if (solved.size === EQ.length) showFinal();
+    }, 4000);
   } else {
     fb.className = 'fb fbko';
-    fb.innerHTML = '<i class="ti ti-x"></i> Pas tout à fait… réessayez ou demandez un indice.';
+    fb.innerHTML = `<i class="ti ti-x"></i> Pas tout à fait… il vous reste <strong>1 essai</strong>.`;
   }
 }
 

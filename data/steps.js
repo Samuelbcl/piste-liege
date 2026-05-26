@@ -35,8 +35,9 @@ const STEPS = [
     lat: 50.6458, lng: 5.5869, x: 100, y: 168,
     anec: "Depuis ce quai, la façade en briques rouges et calcaire blanc du Grand Curtius est immédiatement visible. Godfroid Kurth (1847–1916) était un historien liégeois, père de l'historiographie belge.",
     enigme: "Devant le musée Curtius, les initiales «I·C» sont répétées sur la façade. Que signifie le «I», sachant que le bâtisseur s'appelait Jean Curtius en français mais signait en latin ?",
-    answer: ["joannes", "johannes", "jean", "io"],
+    answer: ["ioannes", "joannes", "johannes", "iohannes", "jean", "io"],
     hint: "En latin médiéval, le prénom Jean s'écrit avec un I.",
+    solution: "« Ioannes » — forme latine médiévale de Jean. Le « I » des initiales I·C signifie donc Ioannes Curtius.",
     pts: 15, tag: "e"
   },
   {
@@ -56,6 +57,7 @@ const STEPS = [
     enigme: "Les fonts reposent sur des bœufs — douze à l'origine, dix aujourd'hui. Que sont devenus les deux manquants, et à quelle période furent-ils perdus ?",
     answer: ["révolution", "revolution", "1794", "fondus", "réquisition", "métal", "canon"],
     hint: "La Révolution française a traversé Liège en 1794 et réquisitionné les métaux.",
+    solution: "Fondus pendant la Révolution française (1794) — le métal fut réquisitionné pour fabriquer des canons.",
     pts: 15, tag: "e"
   },
   {
@@ -67,6 +69,7 @@ const STEPS = [
     enigme: "Défi groupé : dans la Vignette, quel est le matériau dominant des façades ? Dans Hubart, quel type de fenêtres observe-t-on ? Quel siècle ces deux éléments évoquent-ils ensemble ?",
     answer: ["17", "18", "xviie", "xviiie", "dix-sept", "dix-huit", "1700", "1600"],
     hint: "Briques et calcaire de la Vignette, fenêtres à meneaux de Hubart — entre 1600 et 1780.",
+    solution: "Briques et calcaire (Vignette) + fenêtres à meneaux (Hubart) → XVIIe siècle.",
     pts: 10, tag: "g"
   },
   {
@@ -78,6 +81,7 @@ const STEPS = [
     enigme: "Défi collectif : parcourez les trois impasses (des Anges, Venta, de la Couronne). Cherchez un élément végétal — lierre, plante grimpante, mousse — dans chacune. Y en a-t-il une où cet élément est absent ?",
     answer: ["venta", "couronne", "anges", "aucune", "toutes", "lierre", "toutes les trois", "aucune des trois"],
     hint: "Le lierre est très présent dans ces ruelles humides.",
+    solution: "Aucune — le lierre (ou un autre élément végétal) est présent dans les trois ruelles humides.",
     pts: 10, tag: "g"
   },
   {
@@ -89,6 +93,7 @@ const STEPS = [
     enigme: "Quel était le rôle principal des Ursulines dans la société liégeoise d'Ancien Régime, et qu'est devenu leur couvent après 1796 ?",
     answer: ["enseignement", "école", "éducation", "jeunes filles", "instruction", "vendu", "supprimé", "nationalisé"],
     hint: "Les Ursulines étaient dédiées à l'éducation des filles. La Révolution a supprimé les ordres et vendu leurs biens.",
+    solution: "L'éducation des jeunes filles. Après 1796, l'ordre fut supprimé par la Révolution et le couvent vendu comme bien national.",
     pts: 10, tag: "e"
   },
   {
@@ -100,6 +105,7 @@ const STEPS = [
     enigme: "Comment dit-on 'drapier' en wallon, et quelle matière première ce commerce traitait-il principalement à Liège au Moyen Âge ?",
     answer: ["laine", "drap", "dropier", "drapier", "tissu", "toile", "lainier", "textile"],
     hint: "La laine venait des Ardennes et des Pays-Bas.",
+    solution: "« Dropier » en wallon — la matière première principale était la laine (venue des Ardennes et des Pays-Bas).",
     pts: 10, tag: "e"
   },
   {
@@ -111,6 +117,7 @@ const STEPS = [
     enigme: "'Pomme Pourrie' est la déformation de quel mot ou expression d'origine ? Quel phénomène linguistique du wallon liégeois explique cette transformation ?",
     answer: ["pomme d'or", "pom d'or", "or", "phonétique", "wallon", "enseigne", "auberge", "déformation"],
     hint: "Pensez aux enseignes d'auberge médiévales et à l'évolution des voyelles en wallon.",
+    solution: "« Pomme d'Or » — ancienne enseigne d'auberge médiévale, déformée par l'évolution phonétique des voyelles en wallon liégeois.",
     pts: 10, tag: "e"
   },
   {
@@ -122,6 +129,7 @@ const STEPS = [
     enigme: "Dans la Cour Saint-Antoine, cherchez une niche votive ou représentation religieuse sur les murs. À quel saint est-elle dédiée, et à quelle hauteur approximative est-elle placée ?",
     answer: ["antoine", "saint antoine", "padoue", "vierge", "marie", "premier", "deuxième", "2m", "3m", "mur", "hauteur"],
     hint: "Les niches votives liégeoises sont encastrées entre le 1er et le 2e étage des façades.",
+    solution: "Saint Antoine de Padoue — la niche est encastrée entre le 1er et le 2e étage de la façade (environ 2 à 3 m de hauteur).",
     pts: 10, tag: "e"
   },
   {
@@ -133,6 +141,7 @@ const STEPS = [
     enigme: "Au sommet, le mémorial de 1914 porte une dédicace. À quel corps d'armée ou régiment liégeois est-il principalement dédié ?",
     answer: ["chasseurs ardennais", "chasseurs", "lanciers", "volontaires", "liégeois", "gardes civiques"],
     hint: "Des soldats d'élite belges liés aux forêts ardennaises.",
+    solution: "Aux Volontaires liégeois de 1914 et défenseurs de Liège (notamment le 14e régiment de ligne et les Gardes civiques) qui résistèrent à l'offensive allemande en août 1914.",
     pts: 15, tag: "e"
   },
   {
@@ -144,6 +153,7 @@ const STEPS = [
     enigme: "La Tour des Vieux Joncs appartient à l'ordre des chevaliers teutoniques. Cet ordre fut fondé au XIIe siècle lors des croisades dans quelle ville de Terre sainte ?",
     answer: ["saint-jean-d'acre", "acre", "saint jean", "saint-jean", "palestine", "jérusalem", "terre sainte"],
     hint: "Un port de Terre sainte, aujourd'hui en Israël, où des chevaliers allemands fondèrent un hôpital.",
+    solution: "Saint-Jean-d'Acre (Acre) — l'ordre teutonique y fut fondé en 1190 lors du siège de la ville pendant la troisième croisade.",
     pts: 15, tag: "e"
   },
   {
@@ -163,6 +173,7 @@ const STEPS = [
     enigme: "Le Perron est surmonté d'une pomme de pin dorée. Quel est le cri populaire wallon qui signifie 'Vive Liège !' ?",
     answer: ["al bia liège", "al bia", "bia liège", "a bia", "vive liège"],
     hint: "Expression wallonne qui commence par 'Al'.",
+    solution: "« Al bia Liège ! » — cri populaire wallon signifiant littéralement « À la belle Liège ! ».",
     pts: 10, tag: "e"
   },
   {

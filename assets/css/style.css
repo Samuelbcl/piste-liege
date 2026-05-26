@@ -210,6 +210,7 @@ body {
 .fbok { background: var(--gl); color: var(--gd); }
 .fbko { background: var(--rl); color: var(--rd); }
 .fbhi { background: var(--al); color: var(--ad); }
+.fbreveal { background: #fdf6e3; color: #855e0c; border: 1px solid #e8c97a; line-height: 1.5; }
 
 /* ---- Pause / Final ---- */
 .pause-box { text-align: center; padding: 10px 0 4px; color: var(--txt2); font-size: 14px; }
