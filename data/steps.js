@@ -24,7 +24,7 @@ const STEPS = [
     id: "A", type: "boat", icon: "ship", time: "13h00",
     name: "Navette fluviale — Belle Liégeoise",
     addr: "Passerelle La Belle Liégeoise, Liège",
-    lat: 50.6232, lng: 5.5712, x: 40, y: 232,
+    lat: 50.627902, lng: 5.573238, x: 40, y: 232,
     anec: "Embarquement au pied de la Belle Liégeoise — passerelle piétonne et cyclable inaugurée en 2016, conçue par le bureau Greisch. Ses 163 mètres relient le parc de la Boverie au Quai des Vennes et symbolisent le renouveau urbain de Liège. La navette longera ensuite la Meuse jusqu'au Quai Godfroid Kurth, face au musée Curtius.",
     tag: "i"
   },
